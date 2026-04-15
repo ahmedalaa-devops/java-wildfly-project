@@ -1,18 +1,16 @@
 pipeline {
     agent any
-
     environment {
         DOCKER_IMAGE = "ahmeddevop/kitchensink"
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
-
-    stage('Checkout') {
-    steps {
-        git branch: 'main',
-            url: 'https://github.com/ahmedalaa-devops/java-wildfly-project.git'
-    }
-}
-
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/ahmedalaa-devops/java-wildfly-project.git'
+            }
+        }
         stage('Build') {
             steps {
                 dir('kitchensink') {
@@ -20,15 +18,13 @@ pipeline {
                 }
             }
         }
-
         stage('Build Docker Image') {
             steps {
-                dir('quickstart/kitchensink') {
+                dir('kitchensink') {
                     sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
                 }
             }
         }
-
         stage('Login to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
@@ -40,13 +36,11 @@ pipeline {
                 }
             }
         }
-
         stage('Push Image') {
             steps {
                 sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
             }
         }
-
         stage('Deploy Container') {
             steps {
                 sh '''
@@ -55,7 +49,6 @@ pipeline {
                 '''
             }
         }
-
         stage('Verify') {
             steps {
                 sh 'sleep 10'
