@@ -6,13 +6,12 @@ pipeline {
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
 
-    stages {
-
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/ahmedalaa-devops/java-wildfly-project.git'
-            }
-        }
+    stage('Checkout') {
+    steps {
+        git branch: 'main',
+            url: 'https://github.com/ahmedalaa-devops/java-wildfly-project.git'
+    }
+}
 
         stage('Build') {
             steps {
