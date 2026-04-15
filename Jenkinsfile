@@ -16,7 +16,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('quickstart/kitchensink') {
+                dir('kitchensink') {
                     sh 'mvn clean package'
                 }
             }
