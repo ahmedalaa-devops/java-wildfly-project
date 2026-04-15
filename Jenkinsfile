@@ -13,16 +13,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('kitchensink') {
-                    sh 'mvn clean package'
-                }
+                sh 'mvn clean package'
             }
         }
         stage('Build Docker Image') {
             steps {
-                dir('kitchensink') {
-                    sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
-                }
+                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
             }
         }
         stage('Login to DockerHub') {
